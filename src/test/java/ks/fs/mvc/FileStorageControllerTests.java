@@ -56,7 +56,7 @@ public class FileStorageControllerTests {
 
 	@Test
 	@WithMockUser
-	@DisplayName("Test FileStorageController.loadAll with null data returned from the ervice.")
+	@DisplayName("Test FileStorageController.loadAll with null data returned from the service.")
 	void testGetAllWithNullData() throws Exception {
 		given(this.storageService.loadAll()).willReturn(null);
 		this.mvc.perform(get(GET_ALL_FILES_URL)).andExpect(status().isOk())
@@ -65,7 +65,7 @@ public class FileStorageControllerTests {
 	
 	@Test
 	@WithMockUser
-	@DisplayName("Test FileStorageController.loadAll with empty array data returned from the ervice.")
+	@DisplayName("Test FileStorageController.loadAll with empty array data returned from the service.")
 	void testGetAllWithEmptyData() throws Exception {
 		given(this.storageService.loadAll()).willReturn(Collections.emptyList());
 		this.mvc.perform(get(GET_ALL_FILES_URL)).andExpect(status().isOk())
@@ -74,7 +74,7 @@ public class FileStorageControllerTests {
 	
 	@Test
 	@WithMockUser
-	@DisplayName("Test FileStorageController.loadAll with success response and list of valies.")
+	@DisplayName("Test FileStorageController.loadAll with success response and list of values.")
 	void testGetAllWithData() throws Exception {
 		int countofFiles = 3;
 		List<FileItem> results = new ArrayList<>(countofFiles);
