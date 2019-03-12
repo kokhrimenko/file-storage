@@ -1,2 +1,24 @@
-{
-}
+spring:
+  datasource:
+    url: jdbc:h2:mem:file-storage
+    driverClassName: org.h2.Driver
+    username: admin
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 128KB
+      max-request-size: 128KB
+file_store:
+  path:
+    root: /home/kostic/tmp
+logging:
+  level:
+    root: ERROR
+    org.springframework.web: ERROR
+    com.howtodoinjava: DEBUG
+    org.hibernate: ERROR
