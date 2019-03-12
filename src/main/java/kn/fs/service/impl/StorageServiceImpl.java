@@ -54,7 +54,7 @@ public class StorageServiceImpl implements StorageService {
 		}
 	}
 
-	private UserDetails getCurrentUser() {
+	protected UserDetails getCurrentUser() {
 		return (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	}
 	
@@ -63,7 +63,7 @@ public class StorageServiceImpl implements StorageService {
 		return String.format(FILENAME_PATTERN, storePath, currentUserId);
 	}
 	
-	private User getOwner(Long currentUserId) {
+	protected User getOwner(Long currentUserId) {
 		User currentUser = userRepository.findById(currentUserId);
 		if (currentUser == null) {
 			throw new IllegalArgumentException("Can't load current user details from DB. Please check!");
