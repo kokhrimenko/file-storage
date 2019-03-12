@@ -32,6 +32,15 @@ public class FileItem {
 	@Version
     private Long version;
 
+	public FileItem() {
+		super();
+	}
+	
+	public FileItem(Long id) {
+		super();
+		this.id = id;
+	}
+
 	public Long getId() {
 		return id;
 	}

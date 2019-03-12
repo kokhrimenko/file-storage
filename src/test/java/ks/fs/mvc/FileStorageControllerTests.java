@@ -42,6 +42,7 @@ import kn.fs.service.StorageService;
 @AutoConfigureMockMvc
 @SpringBootTest
 @ContextConfiguration(classes = { FileStorageApplication.class })
+@DisplayName("FileStorageController REST tests!")
 public class FileStorageControllerTests {
 	private static final String GET_ALL_FILES_URL = "/api/v1/fileStorage/all";
 	

@@ -25,6 +25,7 @@ import kn.fs.FileStorageApplication;
 @AutoConfigureMockMvc
 @SpringBootTest
 @ContextConfiguration(classes = { FileStorageApplication.class })
+@DisplayName("Security tests!")
 public class SecurityTests {
 	private static final String GET_ALL_FILES_URL = "/api/v1/fileStorage/all";
 	@Autowired
