@@ -7,16 +7,16 @@ BRIEF DESCRIPTION:
 
 Installation instruction:
 
-1 You should configure file_store.path.root (last line) into the application.yml file. This path onto the FS, where you planning to store uploaded file (this folder should have appropriate permissions).
-2 For run application please use "run.sh" script (It works only in Linux bases scripts, for start on Windows you can use command from this script directly)
-3 System have 2 predefined users:
+- You should configure file_store.path.root (last line) into the application.yml file. This path onto the FS, where you planning to store uploaded file (this folder should have appropriate permissions)
+- For run application please use "run.sh" script (It works only in Linux bases scripts, for start on Windows you can use command from this script directly)
+- System have 2 predefined users:
 	username: user1
 	pass: user_1
 and
 	username: user2
 	pass: user_2
 password without encryption. You can change this data, and add more users into file "data.sql"
-4 I've used in-memory DB, so every restarts - user contents (files) will be loosed
+- I've used in-memory DB, so every restarts - user contents (files) will be loosed
 
 
 File storage
