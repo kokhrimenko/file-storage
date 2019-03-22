@@ -3,14 +3,20 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
     <head>
         <title>Hello [[${#httpServletRequest.remoteUser}]]!</title>
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
     	<link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous"/>
-    	<script type = "text/javascript"
-         src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    	<script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    	<script type = "text/javascript" src = "https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    	<meta name="_csrf" content="${_csrf.token}"/>
+    	<meta name="_csrf_header" content="${_csrf.headerName}"/>
     </head>
     <body>
-        <a href="/upload">Upload New File</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/logout">Sign Out</a>
-        <div id="container">Loading, please wait!</div>
+    	<div class="container">
+        	<a href="/upload">Upload New File</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/logout">Sign Out</a>
+        	<div id="container">Loading, please wait!</div>
+        	<div id="dialog" title="Share with Dialog!"></div>
+        </div>
         <script type="text/javascript">
 	        $(document).ready(function() {
 	        	$.ajax('/api/v1/fileStorage/all', {
@@ -26,7 +32,7 @@
 	        			}
 	        			var content = "<table><tr><th>ID</th><th>NAME</th></tr>";
 	        			jqXHR.responseJSON.forEach(function(item) {
-	        				content += "<tr><td>"+item.id+"</td><td><a href='/api/v1/fileStorage/downloadFile/"+item.id+"'>" +item.name+"</a></td></tr>";
+	        				content += "<tr><td>"+item.id+"</td><td><a href='/api/v1/fileStorage/downloadFile/"+item.id+"'>" +item.name+"</a></td><td>" + (!item.shared ? "<a href='javascript:shareWith("+item.id+")'>shareWith</a>" : "&nbsp;") + "</td></tr>";
 	        			});
 	        			content +="</table>";
 	        			container.html(content);
@@ -35,6 +41,43 @@
 	        		
 	        	});
 	        });
+	        
+	        function shareWith(fileId) {
+	        	$.ajax('/api/v1/userManagement/all', {
+	        		complete: function(jqXHR, status) {
+	        			if(status!= 'success') {
+	        				alert('Somethings went WRONG!');
+	        			}
+	        			var container = $('#dialog');
+	        			if(jqXHR.responseJSON.length == 0) {
+	        				container.html('<h1>Haven\'t any registered users at the moment!</h1>');
+	        				
+	        				return;
+	        			}
+	        			var content = "<table><tr><th>NAME</th><th>&nbsp;</th></tr>";
+	        			jqXHR.responseJSON.forEach(function(item) {
+	        				content += "<tr><td>"+item.name+"</td><td><a href='javascript:share("+item.id+", " + fileId + ")'>share</a></td></tr>";
+	        			});
+	        			content +="</table>";
+	        			container.html(content);
+	        			container.dialog();
+	        		},
+	        		contentType: 'application/json',
+	        	});
+	        }
+	        
+	        function share(userId, fileId) {
+	        	$.ajax('/api/v1/userManagement/shareFile/' + userId + '/' + fileId, {
+	        		complete: function(jqXHR, status) {
+	        			if(status!= 'success') {
+	        				alert('Somethings went WRONG!');
+	        			}
+	        			$("#dialog").dialog( "close" );
+	        		},
+	        		contentType: 'application/json',
+	        		method: 'POST',
+	        	});
+	        }
       </script>
       <style>
       	tr, td, th {

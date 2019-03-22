@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,7 +35,7 @@ public class UserDetailsServiceImplTests {
 	@DisplayName("Test loadUserByUsername with wrong username.")
 	public void testLoadUserByUsernameWithWrongName() {
 		String userName = "test";
-		when(userRepository.findByUsername(userName)).thenReturn(null);
+		when(userRepository.findByUsername(userName)).thenReturn(Optional.empty());
 		assertThrows(UsernameNotFoundException.class, () -> userDetailsService.loadUserByUsername(userName));
 	}
 	
@@ -47,7 +49,7 @@ public class UserDetailsServiceImplTests {
 		user.setUsername(userName);
 		user.setPassword(pass);
 		
-		when(userRepository.findByUsername(userName)).thenReturn(user);
+		when(userRepository.findByUsername(userName)).thenReturn(Optional.of(user));
 		UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
 		assertNotNull(userDetails);
 		assertEquals(userName, userDetails.getUsername());

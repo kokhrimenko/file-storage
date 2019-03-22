@@ -26,6 +26,21 @@ public class User {
 	@OneToMany(mappedBy = "owner")
 	private List<FileItem> files;
 	
+	public User() {
+		super();
+	}
+	
+	public User(Long id) {
+		super();
+		this.id = id;
+	}
+
+	public User(Long id, String username) {
+		super();
+		this.id = id;
+		this.username = username;
+	}
+	
 	public Long getId() {
 		return id;
 	}

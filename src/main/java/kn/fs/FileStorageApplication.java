@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @EntityScan( basePackages = {"kn.fs.domain"} )
-@EnableJpaRepositories
+@EnableJpaRepositories("kn.fs.dao")
 public class FileStorageApplication {
     public static void main(String[] args) {
         SpringApplication.run(FileStorageApplication.class, args);

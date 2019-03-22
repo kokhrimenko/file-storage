@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import kn.fs.domain.FileItem;
+import kn.fs.domain.projections.SharedFileItem;
 
 @Service
 public interface StorageService {
@@ -19,9 +20,9 @@ public interface StorageService {
      * 		RuntimeException - if we can't store file to the FS
      * 			
      */
-    FileItem store(MultipartFile file);
+    FileItem store(MultipartFile file, Long userId);
 
-    List<FileItem> loadAll();
+    List<SharedFileItem> loadAll(Long userId);
 
     /**
      * 
@@ -30,7 +31,7 @@ public interface StorageService {
      * @throws IllegalArgumentException - if file didn't exists into the DB
      * 			AccessDeniedException - if current logged user doesn't have access to this file
      */
-    FileItem load(Long fileId);
+    FileItem load(Long fileId, Long userId);
 
     //We don't need this methods at the moment related to the TASK!.
     //Resource loadAsResource(String filename);

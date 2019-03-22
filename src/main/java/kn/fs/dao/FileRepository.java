@@ -1,14 +1,10 @@
 package kn.fs.dao;
 
-import java.util.List;
-
 import org.springframework.data.repository.CrudRepository;
 
+import kn.fs.dao.impl.FileRepositoryCustom;
 import kn.fs.domain.FileItem;
-import kn.fs.domain.User;
 
-public interface FileRepository extends CrudRepository<FileItem, Long>{
+public interface FileRepository extends CrudRepository<FileItem, Long>, FileRepositoryCustom {
 
-	List<FileItem> findAllByOwner(User user);
-	
 }
