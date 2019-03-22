@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,7 +50,18 @@ public class UserServiceImpl implements UserService{
 	@Override
 	@Transactional(readOnly = true)
 	public List<User> loadAllExceptCurrent(Long userId) {
-		return userRepository.findAllExcectOf(userId);
+		return userRepository.findAllExceptOf(userId);
+	}
+
+	@Override
+	public List<User> loadAlreadySharedList(Long fileId, Long currentUserId) {
+		FileItem fileItem = fileRepository.findById(fileId)
+				.orElseThrow(() -> new IllegalArgumentException("Couldn't found file with id: " + fileId));
+		//ToDo move this check to spring security!
+		if(fileItem.getOwner() == null || !currentUserId.equals(fileItem.getOwner().getId())) {
+			throw new AccessDeniedException("Current User doesn't have permissions to specified file!");
+		}
+		return userRepository.listUserBySharedFile(fileId);
 	}
 
 }

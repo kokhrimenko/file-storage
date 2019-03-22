@@ -52,8 +52,8 @@ public class UserServiceImplTests {
 		List<User> users = LongStream.range(0, countOfUsers).mapToObj(index -> new User(index))
 				.collect(Collectors.toList());
 
-		when(userRepository.findAllExcectOf(userId)).thenReturn(users);
-		when(userRepository.findAllExcectOf(userId + 1)).thenReturn(null);
+		when(userRepository.findAllExceptOf(userId)).thenReturn(users);
+		when(userRepository.findAllExceptOf(userId + 1)).thenReturn(null);
 
 		List<User> usersList = userService.loadAllExceptCurrent(userId);
 		assertNotNull(usersList);

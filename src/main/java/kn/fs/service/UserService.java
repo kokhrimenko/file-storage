@@ -12,4 +12,6 @@ public interface UserService {
 	void share(Long userId, Long fileId, boolean share);
 	
 	List<User> loadAllExceptCurrent(Long userId);
+	
+	List<User> loadAlreadySharedList(Long fileId, Long currentUserId);
 }

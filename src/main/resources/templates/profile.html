@@ -30,9 +30,16 @@
 	        				
 	        				return;
 	        			}
-	        			var content = "<table><tr><th>ID</th><th>NAME</th></tr>";
+	        			var content = "<table><tr><th>ID</th><th>NAME</th><th>&nbsp;</th></tr>";
 	        			jqXHR.responseJSON.forEach(function(item) {
-	        				content += "<tr><td>"+item.id+"</td><td><a href='/api/v1/fileStorage/downloadFile/"+item.id+"'>" +item.name+"</a></td><td>" + (!item.shared ? "<a href='javascript:shareWith("+item.id+")'>shareWith</a>" : "&nbsp;") + "</td></tr>";
+	        				content += "<tr>"+
+	        								"<td>"+item.id+"</td>" +
+	        								"<td><a href='/api/v1/fileStorage/downloadFile/"+item.id+"'>" +item.name+"</a></td>" +
+	        								"<td>" + 
+	        									"<div>" + (!item.shared ? "<a href='javascript:shareWith("+item.id+")'>shareWith</a>" : "&nbsp;") + "</div>&nbsp;" +
+	        									"<div><a href='javascript:showShared("+item.id+")'>already shared with: </a></div>" +
+	        								"</td>" +
+	        							"</tr>";
 	        			});
 	        			content +="</table>";
 	        			container.html(content);
@@ -51,15 +58,37 @@
 	        			var container = $('#dialog');
 	        			if(jqXHR.responseJSON.length == 0) {
 	        				container.html('<h1>Haven\'t any registered users at the moment!</h1>');
-	        				
-	        				return;
+	        			} else {
+	        				var content = "<table><tr><th>NAME</th><th>&nbsp;</th></tr>";
+	        				jqXHR.responseJSON.forEach(function(item) {
+	        					content += "<tr><td>"+item.name+"</td><td><a href='javascript:share("+item.id+", " + fileId + ")'>share</a></td></tr>";
+	        				});
+	        				content +="</table>";
+	        				container.html(content);
 	        			}
-	        			var content = "<table><tr><th>NAME</th><th>&nbsp;</th></tr>";
-	        			jqXHR.responseJSON.forEach(function(item) {
-	        				content += "<tr><td>"+item.name+"</td><td><a href='javascript:share("+item.id+", " + fileId + ")'>share</a></td></tr>";
-	        			});
-	        			content +="</table>";
-	        			container.html(content);
+	        			container.dialog();
+	        		},
+	        		contentType: 'application/json',
+	        	});
+	        }
+	        
+	         function showShared(fileId) {
+	        	$.ajax('/api/v1/userManagement/getShared/' + fileId, {
+	        		complete: function(jqXHR, status) {
+	        			if(status!= 'success') {
+	        				alert('Somethings went WRONG!');
+	        			}
+	        			var container = $('#dialog');
+	        			if(jqXHR.responseJSON.length == 0) {
+	        				container.html('<h1>This file hasn\'t been shared at the moment!</h1>');
+	        			} else {
+	        				var content = "<table><tr><th>NAME</th><th>&nbsp;</th></tr>";
+	        				jqXHR.responseJSON.forEach(function(item) {
+	        					content += "<tr><td>"+item.name+"</td><td><a href='javascript:removeShare("+item.id+", " + fileId + ")'>remove share</a></td></tr>";
+	        				});
+	        				content +="</table>";
+	        				container.html(content);
+	        			}
 	        			container.dialog();
 	        		},
 	        		contentType: 'application/json',
@@ -68,6 +97,19 @@
 	        
 	        function share(userId, fileId) {
 	        	$.ajax('/api/v1/userManagement/shareFile/' + userId + '/' + fileId, {
+	        		complete: function(jqXHR, status) {
+	        			if(status!= 'success') {
+	        				alert('Somethings went WRONG!');
+	        			}
+	        			$("#dialog").dialog( "close" );
+	        		},
+	        		contentType: 'application/json',
+	        		method: 'POST',
+	        	});
+	        }
+	        
+	         function removeShare(userId, fileId) {
+	        	$.ajax('/api/v1/userManagement/removeShareFile/' + userId + '/' + fileId, {
 	        		complete: function(jqXHR, status) {
 	        			if(status!= 'success') {
 	        				alert('Somethings went WRONG!');

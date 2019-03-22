@@ -37,11 +37,20 @@ public class UserController {
 	@GetMapping("/all")
 	public List<UserDTO> getAll(Principal principal) {
 		List<User> users = userService.loadAllExceptCurrent(SecurityUtils.getLoggedUserId(principal));
-		if(users == null || users.isEmpty()) {
+		if (users == null || users.isEmpty()) {
 			return Collections.emptyList();
 		}
-		
-		return users.stream().map(user -> new UserDTO(user))
-				.collect(Collectors.toList());
+
+		return users.stream().map(user -> new UserDTO(user)).collect(Collectors.toList());
+	}
+	
+	@GetMapping("/getShared/{fileId}")
+	public List<UserDTO> getAlreadyShared(@PathVariable Long fileId, Principal principal) {
+		List<User> users = userService.loadAlreadySharedList(fileId, SecurityUtils.getLoggedUserId(principal));
+		if (users == null || users.isEmpty()) {
+			return Collections.emptyList();
+		}
+
+		return users.stream().map(user -> new UserDTO(user)).collect(Collectors.toList());
 	}
 }
