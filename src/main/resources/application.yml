@@ -13,12 +13,15 @@ spring:
       file-size-threshold: 2KB
       max-file-size: 128KB
       max-request-size: 128KB
+  http:
+    log-request-details: true
 file_store:
   path:
     root: /home/kostic/tmp
 logging:
   level:
     root: ERROR
-    org.springframework.web: ERROR
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
     com.howtodoinjava: DEBUG
     org.hibernate: ERROR

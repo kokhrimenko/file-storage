@@ -6,14 +6,9 @@ public class FileItemDTO {
 
 	private Long id;
 	private String name;
-		
-	public FileItemDTO(Long id, String name) {
-		super();
-		this.id = id;
-		this.name = name;
-	}
-	
-	public FileItemDTO(FileItem fileItem) {
+	private boolean isShared = false;
+
+	public FileItemDTO(FileItem fileItem, boolean isShared) {
 		super();
 		if(fileItem == null) {
 			throw new IllegalAccessError("File can't be NULL!");
@@ -21,6 +16,7 @@ public class FileItemDTO {
 	
 		this.id = fileItem.getId();
 		this.name = fileItem.getName();
+		this.isShared = isShared;
 	}
 	
 	public Long getId() {
@@ -29,7 +25,8 @@ public class FileItemDTO {
 	public String getName() {
 		return name;
 	}
-	
-	
-	
+
+	public boolean isShared() {
+		return isShared;
+	}
 }

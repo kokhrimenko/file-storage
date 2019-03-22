@@ -1,14 +1,14 @@
 BRIEF DESCRIPTION:
-- I've preserved the task requirement at the bottom of this documents.
-- I didn't use swagger because this service is pretty simple and, as for me doesn't required it.
-- I've little simplified StorageService because I really don't need some of them and decided to remove their for economy time reason.
-- I didn't implement share to user and user registration features.
-- I use simple Front-End forms and scripts to minimize time consumption.
+- I've preserved the task requirement at the bottom of this document.
+- I didn't use swagger because this service is pretty simple and didn't require it.
+- I've little simplified StorageService because I don't need some of them and decided to remove theirs for economy time reason. 
+- I didn't implement share to the user and user registration features.
+- I use simple Front-End forms and scripts to minimise time consumption.
 
 Installation instruction:
 
-- You should configure file_store.path.root (last line) into the application.yml file. This path onto the FS, where you planning to store uploaded file (this folder should have appropriate permissions)
-- For run application please use "run.sh" script (It works only in Linux bases scripts, for start on Windows you can use command from this script directly)
+- You should configure file_store.path.root (last line) into the application.yml file. This path onto the FS, where you are planning to store uploaded file (this folder should have appropriate permissions)
+- To run the application, please use "run.sh" script (It works only in Linux bases scripts, for a start on Windows you can use command from this script directly)
 - System have 2 predefined users:
 	username: user1
 	pass: user_1
@@ -16,7 +16,7 @@ and
 	username: user2
 	pass: user_2
 password without encryption. You can change this data, and add more users into file "data.sql"
-- I've used in-memory DB, so every restarts - user contents (files) will be loosed
+- I've used in-memory DB, so every restarts - user contents (files) is loosed
 
 
 File storage
