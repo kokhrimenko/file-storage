@@ -12,11 +12,19 @@
     	<meta name="_csrf_header" content="${_csrf.headerName}"/>
     </head>
     <body>
-    	<div class="container">
-        	<a href="/upload">Upload New File</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/logout">Sign Out</a>
-        	<div id="container">Loading, please wait!</div>
-        	<div id="dialog" title="Share with Dialog!"></div>
-        </div>
+    	<div class="container target">
+    		<div class="row">
+        		<div class="col-sm-10">
+             		<h1 class="">[[${#httpServletRequest.remoteUser}]]</h1>
+          			<a href="/upload" class="btn btn-primary">Upload New File</a>
+          			<a href="/logout" class="btn btn-info float-right">Sign Out</a>
+        		</div>
+        	</div>
+    		<div id="dialog" title="Share with Dialog!" class="modal"></div>
+    		<div class="row">
+        		<div class="col-sm-12" id="container">Loading, please wait!</div>
+        	</div>
+    	</div>
         <script type="text/javascript">
 	        $(document).ready(function() {
 	        	$.ajax('/api/v1/fileStorage/all', {
@@ -26,18 +34,25 @@
 	        			}
 	        			var container = $('#container');
 	        			if(jqXHR.responseJSON.length == 0) {
-	        				container.html('<h1>Empty at the moment! <a href="/upload">Upload New File</a> firstly</h1>');
+	        				container.html('<h1>Empty at the moment! <a class="btn btn-primary" href="/upload">Upload New File</a> firstly</h1>');
 	        				
 	        				return;
 	        			}
-	        			var content = "<table><tr><th>ID</th><th>NAME</th><th>&nbsp;</th></tr>";
+	        			var content = "<table class='table'>" +
+	        								"<thead class='grey lighten-2'>" +
+	        									"<tr>" +
+	        										"<th scope='col'>ID</th>"+ 
+	        										"<th scope='col'>NAME</th>" +
+	        										"<th scope='col'>&nbsp;</th>" +
+	        									"</tr>" +
+	        								"</thead>";
 	        			jqXHR.responseJSON.forEach(function(item) {
 	        				content += "<tr>"+
-	        								"<td>"+item.id+"</td>" +
+	        								"<td scope='row'>"+item.id+"</td>" +
 	        								"<td><a href='/api/v1/fileStorage/downloadFile/"+item.id+"'>" +item.name+"</a></td>" +
 	        								"<td>" + 
-	        									"<div>" + (!item.shared ? "<a href='javascript:shareWith("+item.id+")'>shareWith</a>" : "&nbsp;") + "</div>&nbsp;" +
-	        									"<div><a href='javascript:showShared("+item.id+")'>already shared with: </a></div>" +
+	        									(!item.shared ? "<a class='btn btn-default' href='javascript:shareWith("+item.id+")'>shareWith >></a>" : "&nbsp;") +
+	        									"<a class='btn btn-default' href='javascript:showShared("+item.id+")'>already shared with >></a>" +
 	        								"</td>" +
 	        							"</tr>";
 	        			});
@@ -59,9 +74,9 @@
 	        			if(jqXHR.responseJSON.length == 0) {
 	        				container.html('<h1>Haven\'t any registered users at the moment!</h1>');
 	        			} else {
-	        				var content = "<table><tr><th>NAME</th><th>&nbsp;</th></tr>";
+	        				var content = "<table class='table'><thead class='grey lighten-2'><tr><th scope='col'>NAME</th><th scope='col'>&nbsp;</th></tr></thead>";
 	        				jqXHR.responseJSON.forEach(function(item) {
-	        					content += "<tr><td>"+item.name+"</td><td><a href='javascript:share("+item.id+", " + fileId + ")'>share</a></td></tr>";
+	        					content += "<tr><td>"+item.name+"</td><td><a class='btn btn-default' href='javascript:share("+item.id+", " + fileId + ")'>share</a></td></tr>";
 	        				});
 	        				content +="</table>";
 	        				container.html(content);
@@ -82,9 +97,9 @@
 	        			if(jqXHR.responseJSON.length == 0) {
 	        				container.html('<h1>This file hasn\'t been shared at the moment!</h1>');
 	        			} else {
-	        				var content = "<table><tr><th>NAME</th><th>&nbsp;</th></tr>";
+	        				var content = "<table class='table'><thead class='grey lighten-2'><tr><th scope='col'>NAME</th><th scope='col'>&nbsp;</th></tr>";
 	        				jqXHR.responseJSON.forEach(function(item) {
-	        					content += "<tr><td>"+item.name+"</td><td><a href='javascript:removeShare("+item.id+", " + fileId + ")'>remove share</a></td></tr>";
+	        					content += "<tr><td>"+item.name+"</td><td><a class='btn btn-default' href='javascript:removeShare("+item.id+", " + fileId + ")'>remove share</a></td></tr>";
 	        				});
 	        				content +="</table>";
 	        				container.html(content);
