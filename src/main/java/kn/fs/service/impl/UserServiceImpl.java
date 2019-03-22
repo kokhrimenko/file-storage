@@ -54,6 +54,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<User> loadAlreadySharedList(Long fileId, Long currentUserId) {
 		FileItem fileItem = fileRepository.findById(fileId)
 				.orElseThrow(() -> new IllegalArgumentException("Couldn't found file with id: " + fileId));
@@ -62,6 +63,18 @@ public class UserServiceImpl implements UserService{
 			throw new AccessDeniedException("Current User doesn't have permissions to specified file!");
 		}
 		return userRepository.listUserBySharedFile(fileId);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public User loadUserByUsername(String username) {
+		return userRepository.findByUsername(username).orElse(null);
+	}
+
+	@Override
+	@Transactional
+	public User createUser(User user) {
+		return userRepository.save(user);
 	}
 
 }

@@ -14,4 +14,8 @@ public interface UserService {
 	List<User> loadAllExceptCurrent(Long userId);
 	
 	List<User> loadAlreadySharedList(Long fileId, Long currentUserId);
+	
+	User loadUserByUsername(String username);
+	
+	User createUser(User user);
 }
