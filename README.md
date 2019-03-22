@@ -2,7 +2,7 @@ BRIEF DESCRIPTION:
 - I've preserved the task requirement at the bottom of this document.
 - I didn't use swagger because this service is pretty simple and didn't require it.
 - I've little simplified StorageService because I don't need some of them and decided to remove theirs for economy time reason. 
-- I didn't implement share to the user and user registration features.
+- I've implemented a share feature but a user can't, at the moment, remove his share after creation.
 - I use simple Front-End forms and scripts to minimise time consumption.
 
 Installation instruction:
