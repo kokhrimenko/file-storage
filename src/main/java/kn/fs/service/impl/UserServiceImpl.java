@@ -74,6 +74,9 @@ public class UserServiceImpl implements UserService{
 	@Override
 	@Transactional
 	public User createUser(User user) {
+		if (user == null) {
+			throw new IllegalArgumentException("Can't store null user!");
+		}
 		return userRepository.save(user);
 	}
 
