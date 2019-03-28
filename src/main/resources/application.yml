@@ -21,7 +21,7 @@ file_store:
 logging:
   level:
     root: ERROR
+    org.springframework: ERROR
     org.springframework.web: DEBUG
     org.springframework.security: DEBUG
-    com.howtodoinjava: DEBUG
     org.hibernate: ERROR
