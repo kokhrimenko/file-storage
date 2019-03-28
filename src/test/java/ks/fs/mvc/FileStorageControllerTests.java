@@ -6,9 +6,11 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
@@ -24,6 +26,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
@@ -49,9 +52,11 @@ import kn.fs.service.StorageService;
 @DisplayName("FileStorageController REST tests!")
 @ActiveProfiles({"test"})
 public class FileStorageControllerTests {
+	private static final String PROFILE_PAGE_URL = "/profile";
 	private static final String GET_ALL_FILES_URL = "/api/v1/fileStorage/all";
 	private static final String DOWNLOAD_FILE_URL = "/api/v1/fileStorage/downloadFile/%s";
-
+	private static final String UPLOAD_FILE_URL = "/api/v1/fileStorage/uploadFile";
+	
 	private static final String USER_DETAILS_TEST_BEAN_NAME = "TestUserDetailsService";
 
 	@Autowired
@@ -80,7 +85,7 @@ public class FileStorageControllerTests {
 	
 	@Test
 	@WithUserDetails(userDetailsServiceBeanName = FileStorageControllerTests.USER_DETAILS_TEST_BEAN_NAME)
-	@DisplayName("Test FileStorageController.loadAll with success response and list of values.")
+	@DisplayName("Test FileStorageController.loadAll - success case.")
 	void testGetAllWithData() throws Exception {
 		int countofFiles = 3;
 		List<SharedFileItem> results = new ArrayList<>(countofFiles);
@@ -137,5 +142,16 @@ public class FileStorageControllerTests {
 		this.mvc.perform(get(String.format(DOWNLOAD_FILE_URL, 1))).andExpect(status().isOk())
 				.andExpect(header().string(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileItem.getName() + "\""))
 				.andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_HTML_VALUE));
+	}
+	
+	@Test
+	@WithUserDetails(userDetailsServiceBeanName = FileStorageControllerTests.USER_DETAILS_TEST_BEAN_NAME)
+	@DisplayName("Test FileStorageController.uploadFile - success case.")
+	void testUploadFile() throws Exception {
+		MockMultipartFile uploadedFile = new MockMultipartFile("uploadFile", "uploadFile.txt", "text/plain",
+				"unit test".getBytes());
+
+		this.mvc.perform(multipart(UPLOAD_FILE_URL).file(uploadedFile)).andExpect(status().isFound())
+				.andExpect(redirectedUrl(PROFILE_PAGE_URL));
 	}
 }

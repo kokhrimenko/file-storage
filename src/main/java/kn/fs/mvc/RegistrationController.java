@@ -20,35 +20,41 @@ import kn.fs.service.UserService;
 public class RegistrationController {
 
 	@Autowired
-    private UserService userService;
-	
+	private UserService userService;
+
 	@ModelAttribute("user")
-    public UserRegistrationDTO userRegistrationDto() {
-        return new UserRegistrationDTO();
-    }
-	
+	public UserRegistrationDTO userRegistrationDto() {
+		return new UserRegistrationDTO();
+	}
+
 	@GetMapping
-    public String showRegistrationForm(Model model) {
-        return "register";
-    }
-	
+	public String showRegistrationForm(Model model) {
+		return "register";
+	}
+
 	@PostMapping
 	public String registerUserAccount(@ModelAttribute("user") @Valid UserRegistrationDTO userDto,
 			BindingResult result) {
-		if(!userDto.getPassword().equals(userDto.getConfirmPassword())) {
-			result.rejectValue("password", null, "Password and confirm password are not equals. Please check!");
-        }
-        User existing = userService.loadUserByUsername(userDto.getUsername());
-        if (existing != null){
-            result.rejectValue("username", null, "There is already an account registered with that username.");
-        }
-        
-        if (result.hasErrors()){
-            return "register";
-        }
 
-        userService.createUser(userDto.toUser());
-        return "redirect:/register?success";
-    }
+		if (result.hasErrors()) {
+			return "register";
+		}
+
+		if (!userDto.getPassword().equals(userDto.getConfirmPassword())) {
+			result.rejectValue("password", "wrongPassword",
+					"Password and confirm password are not equals. Please check!");
+
+			return "register";
+		}
+		User existing = userService.loadUserByUsername(userDto.getUsername());
+		if (existing != null) {
+			result.rejectValue("username", "alreadyExists", "There is already an account registered with that username.");
+
+			return "register";
+		}
+
+		userService.createUser(userDto.toUser());
+		return "redirect:/register?success";
+	}
 
 }

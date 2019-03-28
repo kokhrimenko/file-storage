@@ -43,6 +43,7 @@ public class UserControllerTests {
 	private static final String SHARE_URL = "/api/v1/userManagement/shareFile/" + TEST_USER_ID + "/1";
 	private static final String REMOVE_SHARE_URL = "/api/v1/userManagement/removeShareFile/" + TEST_USER_ID + "/1";
 	private static final String GET_ALL_URL = "/api/v1/userManagement/all";
+	private static final String GET_SHARED_USER_URL = "/api/v1/userManagement/getShared/%s";
 	
 	private static final String USER_DETAILS_TEST_BEAN_NAME = "TestUserDetailsService";
 	
@@ -54,21 +55,21 @@ public class UserControllerTests {
 
 	@Test
 	@WithMockUser
-	@DisplayName("Test UserController.share API call.")
+	@DisplayName("Test UserController.share API call - success case.")
 	void testShare() throws Exception {
 		this.mvc.perform(post(SHARE_URL)).andExpect(status().isOk()).andExpect(content().string(""));
 	}
 	
 	@Test
 	@WithMockUser
-	@DisplayName("Test UserController.removeShare API call.")
+	@DisplayName("Test UserController.removeShare API call - success case.")
 	void testRemoveShare() throws Exception {
 		this.mvc.perform(post(REMOVE_SHARE_URL)).andExpect(status().isOk()).andExpect(content().string(""));
 	}
 	
 	@Test
 	@WithUserDetails(value="customUsername", userDetailsServiceBeanName = UserControllerTests.USER_DETAILS_TEST_BEAN_NAME)
-	@DisplayName("Test UserController.getAll with null list as a result API call.")
+	@DisplayName("Test UserController.getAll with null list as a result.")
 	void testGetAllWithNullResult() throws Exception {
 		when(userService.loadAllExceptCurrent(TEST_USER_ID)).thenReturn(null);
 
@@ -77,7 +78,7 @@ public class UserControllerTests {
 
 	@Test
 	@WithUserDetails(value="customUsername", userDetailsServiceBeanName = UserControllerTests.USER_DETAILS_TEST_BEAN_NAME)
-	@DisplayName("Test UserController.getAll with empty list as a result API call.")
+	@DisplayName("Test UserController.getAll with empty list as a result.")
 	void testGetAllWithEmptyResult() throws Exception {
 		when(userService.loadAllExceptCurrent(TEST_USER_ID)).thenReturn(Collections.emptyList());
 
@@ -86,7 +87,7 @@ public class UserControllerTests {
 	
 	@Test
 	@WithUserDetails(value="customUsername", userDetailsServiceBeanName = UserControllerTests.USER_DETAILS_TEST_BEAN_NAME)
-	@DisplayName("Test UserController.getAll positive case API call.")
+	@DisplayName("Test UserController.getAll - success case.")
 	void testGetAll() throws Exception {
 		final String usernamePrefix = "usernamePrefix_%s";
 		int countOfUsers = 5;
@@ -111,5 +112,49 @@ public class UserControllerTests {
 			.andExpect(jsonPath("$[4].id", equalTo(4)))
 			.andExpect(jsonPath("$[4].name", equalTo(String.format(usernamePrefix, 4))))
 			.andExpect(jsonPath("$[4].password").doesNotExist());
+	}
+	
+	@Test
+	@WithUserDetails(value = "customUsername", userDetailsServiceBeanName = UserControllerTests.USER_DETAILS_TEST_BEAN_NAME)
+	@DisplayName("Test UserController.getAlreadyShared with empty list as a result.")
+	void testGetAlreadySharedWithEmptyResult() throws Exception {
+		final long fileId = 321l;
+		when(userService.loadAlreadySharedList(fileId, TEST_USER_ID)).thenReturn(Collections.emptyList());
+
+		this.mvc.perform(get(String.format(GET_SHARED_USER_URL, fileId))).andExpect(status().isOk())
+				.andExpect(content().string("[]"));
+	}
+
+	@Test
+	@WithUserDetails(value = "customUsername", userDetailsServiceBeanName = UserControllerTests.USER_DETAILS_TEST_BEAN_NAME)
+	@DisplayName("Test UserController.getAlreadyShared with null list as a result.")
+	void testGetAlreadySharedWithNullResult() throws Exception {
+		final long fileId = 321l;
+		when(userService.loadAlreadySharedList(fileId, TEST_USER_ID)).thenReturn(null);
+
+		this.mvc.perform(get(String.format(GET_SHARED_USER_URL, fileId))).andExpect(status().isOk())
+				.andExpect(content().string("[]"));
+	}
+	
+	@Test
+	@WithUserDetails(value = "customUsername", userDetailsServiceBeanName = UserControllerTests.USER_DETAILS_TEST_BEAN_NAME)
+	@DisplayName("Test UserController.getAlreadyShared with user list as a result.")
+	void testGetAlreadySharedWithResult() throws Exception {
+		int countOfUsers = 3;
+		final long fileId = 321l;
+		final String usernamePrefix = "usernamePrefix_%s";
+		List<User> users = LongStream.range(0, countOfUsers)
+				.mapToObj(id -> new User(id, String.format(usernamePrefix, id))).collect(Collectors.toList());
+
+		when(userService.loadAlreadySharedList(fileId, TEST_USER_ID)).thenReturn(users);
+
+		this.mvc.perform(get(String.format(GET_SHARED_USER_URL, fileId))).andExpect(status().isOk())
+				.andExpect(jsonPath("$[0].id", equalTo(0)))
+				.andExpect(jsonPath("$[0].name", equalTo(String.format(usernamePrefix, 0))))
+				.andExpect(jsonPath("$[0].password").doesNotExist()).andExpect(jsonPath("$[1].id", equalTo(1)))
+				.andExpect(jsonPath("$[1].name", equalTo(String.format(usernamePrefix, 1))))
+				.andExpect(jsonPath("$[1].password").doesNotExist()).andExpect(jsonPath("$[2].id", equalTo(2)))
+				.andExpect(jsonPath("$[2].name", equalTo(String.format(usernamePrefix, 2))))
+				.andExpect(jsonPath("$[2].password").doesNotExist());
 	}
 }
