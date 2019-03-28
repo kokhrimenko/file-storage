@@ -60,7 +60,7 @@ public class RegistrationControllerTests {
 	private UserService userService;
 
 	@Test
-	@DisplayName("Test RegistrationController.registerUserAccount with not equals password's.")
+	@DisplayName("Test RegistrationController.registerUserAccount - not equals password's.")
 	void testRegisterUserAccountWithDifferentPasswords() throws Exception {
 		UserRegistrationDTO userData = new UserRegistrationDTO();
 		userData.setPassword("password");
@@ -79,7 +79,7 @@ public class RegistrationControllerTests {
 	}
 	
 	@Test
-	@DisplayName("Test RegistrationController.registerUserAccount with too short password.")
+	@DisplayName("Test RegistrationController.registerUserAccount - too short password.")
 	void testRegisterUserAccountWithShortPasswords() throws Exception {
 		UserRegistrationDTO userData = new UserRegistrationDTO();
 		userData.setPassword("passwo");
@@ -98,7 +98,7 @@ public class RegistrationControllerTests {
 	}
 	
 	@Test
-	@DisplayName("Test RegistrationController.registerUserAccount with null password.")
+	@DisplayName("Test RegistrationController.registerUserAccount - null password.")
 	void testRegisterUserAccountWithNullPasswords() throws Exception {
 		UserRegistrationDTO userData = new UserRegistrationDTO();
 		userData.setPassword(null);
@@ -117,7 +117,7 @@ public class RegistrationControllerTests {
 	}
 	
 	@Test
-	@DisplayName("Test RegistrationController.registerUserAccount with too short username.")
+	@DisplayName("Test RegistrationController.registerUserAccount - too short username.")
 	void testRegisterUserAccountWithShortUsername() throws Exception {
 		UserRegistrationDTO userData = new UserRegistrationDTO();
 		userData.setPassword("password");
@@ -136,7 +136,7 @@ public class RegistrationControllerTests {
 	}
 	
 	@Test
-	@DisplayName("Test RegistrationController.registerUserAccount with null username.")
+	@DisplayName("Test RegistrationController.registerUserAccount - null username.")
 	void testRegisterUserAccountWithNullUsername() throws Exception {
 		UserRegistrationDTO userData = new UserRegistrationDTO();
 		userData.setPassword("password");
@@ -155,7 +155,7 @@ public class RegistrationControllerTests {
 	}
 	
 	@Test
-	@DisplayName("Test RegistrationController.registerUserAccount with busy username.")
+	@DisplayName("Test RegistrationController.registerUserAccount - busy username.")
 	void testRegisterUserAccountWithAlreadyExistsUsername() throws Exception {		
 		UserRegistrationDTO userData = new UserRegistrationDTO();
 		userData.setPassword("password");

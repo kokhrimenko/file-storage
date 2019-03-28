@@ -67,7 +67,7 @@ public class FileStorageControllerTests {
 
 	@Test
 	@WithUserDetails(value="customUsername", userDetailsServiceBeanName = FileStorageControllerTests.USER_DETAILS_TEST_BEAN_NAME)
-	@DisplayName("Test FileStorageController.loadAll with null data returned from the service.")
+	@DisplayName("Test FileStorageController.loadAll - return null data from the service.")
 	void testGetAllWithNullData() throws Exception {
 		when(this.storageService.loadAll(TEST_USER_ID)).thenReturn(null);
 		this.mvc.perform(get(GET_ALL_FILES_URL)).andExpect(status().isOk())
@@ -76,7 +76,7 @@ public class FileStorageControllerTests {
 	
 	@Test
 	@WithUserDetails(userDetailsServiceBeanName = FileStorageControllerTests.USER_DETAILS_TEST_BEAN_NAME)
-	@DisplayName("Test FileStorageController.loadAll with empty array data returned from the service.")
+	@DisplayName("Test FileStorageController.loadAll - return empty array data from the service.")
 	void testGetAllWithEmptyData() throws Exception {
 		when(this.storageService.loadAll(TEST_USER_ID)).thenReturn(Collections.emptyList());
 		this.mvc.perform(get(GET_ALL_FILES_URL)).andExpect(status().isOk())
@@ -103,7 +103,7 @@ public class FileStorageControllerTests {
 	
 	@Test
 	@WithUserDetails(userDetailsServiceBeanName = FileStorageControllerTests.USER_DETAILS_TEST_BEAN_NAME)
-	@DisplayName("Test FileStorageController.downloadFile without required privileges.")
+	@DisplayName("Test FileStorageController.downloadFile - without required privileges.")
 	void testDownloadFileWithAccessDeny() throws Exception {
 		doThrow(AccessDeniedException.class).when(storageService).load(anyLong(), anyLong());
 		
@@ -112,7 +112,7 @@ public class FileStorageControllerTests {
 	
 	@Test
 	@WithUserDetails(userDetailsServiceBeanName = FileStorageControllerTests.USER_DETAILS_TEST_BEAN_NAME)
-	@DisplayName("Test FileStorageController.downloadFile with wrong fileId.")
+	@DisplayName("Test FileStorageController.downloadFile - with wrong fileId.")
 	void testDownloadFileWithIllegalArgumentException() throws Exception {
 		doThrow(IllegalArgumentException.class).when(storageService).load(anyLong(), anyLong());
 		
@@ -121,7 +121,7 @@ public class FileStorageControllerTests {
 	
 	@Test
 	@WithUserDetails(userDetailsServiceBeanName = FileStorageControllerTests.USER_DETAILS_TEST_BEAN_NAME)
-	@DisplayName("Test FileStorageController.downloadFile when file doesn't exists on FS.")
+	@DisplayName("Test FileStorageController.downloadFile - file doesn't exists on FS.")
 	void testDownloadFileWithoutFileOnFS() throws Exception {
 		FileItem fileItem = new FileItem();
 		fileItem.setFsPath("/some_rundom_value");

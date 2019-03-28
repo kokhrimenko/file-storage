@@ -36,28 +36,28 @@ public class SecurityTests {
 	private MockMvc mvc;
 
 	@Test
-	@DisplayName("Test request secured resource without authorization.")
+	@DisplayName("Security test - request secured resource without authorization.")
 	void testGetSecuredResourceWithoutAuthoriation() throws Exception {
 		this.mvc.perform(get(GET_ALL_FILES_URL)).andExpect(status().isFound())
 								.andExpect(redirectedUrl(LOGIN_URL));
 	}
 
 	@Test
-	@DisplayName("Test request unsecured resource without authorization.")
+	@DisplayName("Security test - request unsecured resource without authorization.")
 	void testUnsecuredResourceWithoutAuthorization() throws Exception {
 		this.mvc.perform(get("/login")).andExpect(status().isOk());
 	}
 	
 	@Test
 	@WithMockUser
-	@DisplayName("Test request secured profile page with mock user.")
+	@DisplayName("Security test - request secured profile page with mock user.")
 	void testProfile() throws Exception {
 		this.mvc.perform(get("/profile")).andExpect(status().isOk());
 	}
 	
 	@Test
 	@WithMockUser
-	@DisplayName("Test request logout page with mock user.")
+	@DisplayName("Security test - request logout page with mock user.")
 	void testLogout() throws Exception {
 		this.mvc.perform(get("/logout")).andExpect(status().isFound())
 				.andExpect(redirectedUrl("/login?logout"));
@@ -65,7 +65,7 @@ public class SecurityTests {
 	
 	@Test
 	@WithMockUser
-	@DisplayName("Test request upload page with mock user.")
+	@DisplayName("Security test - request upload page with mock user.")
 	void testUpload() throws Exception {
 		this.mvc.perform(get("/upload")).andExpect(status().isOk());
 	}

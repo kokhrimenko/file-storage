@@ -32,7 +32,7 @@ public class UserDetailsServiceImplTests {
 	private UserDetailsServiceImpl userDetailsService;
 
 	@Test
-	@DisplayName("Test loadUserByUsername with wrong username.")
+	@DisplayName("Test UserDetailsService.loadUserByUsername - wrong username.")
 	public void testLoadUserByUsernameWithWrongName() {
 		String userName = "test";
 		when(userRepository.findByUsername(userName)).thenReturn(Optional.empty());
@@ -40,7 +40,7 @@ public class UserDetailsServiceImplTests {
 	}
 	
 	@Test
-	@DisplayName("Test loadUserByUsername positive case.")
+	@DisplayName("Test UserDetailsService.loadUserByUsername - success case.")
 	public void testLoadUserByUsername() {
 		String userName = "test",
 				pass = "pass";

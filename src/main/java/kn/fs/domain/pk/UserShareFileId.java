@@ -13,10 +13,10 @@ public class UserShareFileId implements Serializable {
 	 */
 	private static final long serialVersionUID = 3852668333275821995L;
 
-	@Column(name = "user_id")
+	@Column(name = "USER_ID")
 	private Long userId;
 	
-	@Column(name = "file_id")
+	@Column(name = "FILE_ID")
 	private Long fileId;
 
 	public UserShareFileId() {

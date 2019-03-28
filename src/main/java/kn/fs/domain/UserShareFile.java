@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import kn.fs.domain.pk.UserShareFileId;
 
 @Entity
-@Table(name = "user_share")
+@Table(name = "USER_SHARE")
 public class UserShareFile {
 	@EmbeddedId
 	private UserShareFileId id;

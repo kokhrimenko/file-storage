@@ -21,7 +21,8 @@ public class FileRepositoryCustomImpl implements FileRepositoryCustom {
 		TypedQuery<SharedFileItem> query = entityManager.createQuery(
 				"SELECT new  kn.fs.domain.projections.SharedFileItem(fi,true) "
 				+ "from FileItem fi "
-				+ "where fi.id in (SELECT usf.fileItem.id from UserShareFile usf WHERE usf.user.id = :userId)",
+				+ "where fi.id in (SELECT usf.fileItem.id from UserShareFile usf WHERE usf.user.id = :userId) "
+				+ "ORDER BY fi.id ASC",
 				SharedFileItem.class);
 		query.setParameter("userId", userId);
 
@@ -33,7 +34,8 @@ public class FileRepositoryCustomImpl implements FileRepositoryCustom {
 		TypedQuery<SharedFileItem> query = entityManager.createQuery(
 				"SELECT new  kn.fs.domain.projections.SharedFileItem(fi,false) "
 				+ "from FileItem fi "
-				+ "where fi.owner.id = :userId",
+				+ "where fi.owner.id = :userId "
+				+ "ORDER BY fi.id ASC",
 				SharedFileItem.class);
 		query.setParameter("userId", userId);
 

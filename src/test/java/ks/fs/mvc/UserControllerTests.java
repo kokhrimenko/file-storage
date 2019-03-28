@@ -69,7 +69,7 @@ public class UserControllerTests {
 	
 	@Test
 	@WithUserDetails(value="customUsername", userDetailsServiceBeanName = UserControllerTests.USER_DETAILS_TEST_BEAN_NAME)
-	@DisplayName("Test UserController.getAll with null list as a result.")
+	@DisplayName("Test UserController.getAll - null as a result.")
 	void testGetAllWithNullResult() throws Exception {
 		when(userService.loadAllExceptCurrent(TEST_USER_ID)).thenReturn(null);
 
@@ -78,7 +78,7 @@ public class UserControllerTests {
 
 	@Test
 	@WithUserDetails(value="customUsername", userDetailsServiceBeanName = UserControllerTests.USER_DETAILS_TEST_BEAN_NAME)
-	@DisplayName("Test UserController.getAll with empty list as a result.")
+	@DisplayName("Test UserController.getAll - empty as a result.")
 	void testGetAllWithEmptyResult() throws Exception {
 		when(userService.loadAllExceptCurrent(TEST_USER_ID)).thenReturn(Collections.emptyList());
 
@@ -116,7 +116,7 @@ public class UserControllerTests {
 	
 	@Test
 	@WithUserDetails(value = "customUsername", userDetailsServiceBeanName = UserControllerTests.USER_DETAILS_TEST_BEAN_NAME)
-	@DisplayName("Test UserController.getAlreadyShared with empty list as a result.")
+	@DisplayName("Test UserController.getAlreadyShared - empty as a result.")
 	void testGetAlreadySharedWithEmptyResult() throws Exception {
 		final long fileId = 321l;
 		when(userService.loadAlreadySharedList(fileId, TEST_USER_ID)).thenReturn(Collections.emptyList());
@@ -127,7 +127,7 @@ public class UserControllerTests {
 
 	@Test
 	@WithUserDetails(value = "customUsername", userDetailsServiceBeanName = UserControllerTests.USER_DETAILS_TEST_BEAN_NAME)
-	@DisplayName("Test UserController.getAlreadyShared with null list as a result.")
+	@DisplayName("Test UserController.getAlreadyShared - null as a result.")
 	void testGetAlreadySharedWithNullResult() throws Exception {
 		final long fileId = 321l;
 		when(userService.loadAlreadySharedList(fileId, TEST_USER_ID)).thenReturn(null);
@@ -138,7 +138,7 @@ public class UserControllerTests {
 	
 	@Test
 	@WithUserDetails(value = "customUsername", userDetailsServiceBeanName = UserControllerTests.USER_DETAILS_TEST_BEAN_NAME)
-	@DisplayName("Test UserController.getAlreadyShared with user list as a result.")
+	@DisplayName("Test UserController.getAlreadyShared - success case.")
 	void testGetAlreadySharedWithResult() throws Exception {
 		int countOfUsers = 3;
 		final long fileId = 321l;

@@ -17,10 +17,10 @@ public class User {
 	@GeneratedValue
 	private Long id;
 	
-	@Column
+	@Column(nullable = false, unique = true)
 	private String username;
 	
-	@Column
+	@Column(nullable = false)
 	private String password;
 
 	@OneToMany(mappedBy = "owner")

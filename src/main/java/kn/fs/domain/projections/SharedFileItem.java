@@ -2,7 +2,7 @@ package kn.fs.domain.projections;
 
 import kn.fs.domain.FileItem;
 
-public class SharedFileItem extends FileItem {
+public class SharedFileItem {
 
 	private FileItem fileItem;
 	private boolean shared = false;

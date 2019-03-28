@@ -47,7 +47,7 @@ public class UserServiceImplTests {
 	private UserServiceImpl userService;
 
 	@Test
-	@DisplayName("Test loadAll users except current user.")
+	@DisplayName("Test UserService.loadAll - users except current user.")
 	public void testLoadAllUsersExceptCurrentOne() {
 		int countOfUsers = 11;
 		Long userId = 33L;
@@ -66,7 +66,7 @@ public class UserServiceImplTests {
 	}
 
 	@Test
-	@DisplayName("Test share without user.")
+	@DisplayName("Test UserService.share - without user.")
 	public void testShareWithoutUser() {
 		Long userId = 33L;
 		when(userRepository.findById(userId)).thenReturn(Optional.empty());
@@ -74,7 +74,7 @@ public class UserServiceImplTests {
 	}
 
 	@Test
-	@DisplayName("Test share without file.")
+	@DisplayName("Test UserService.share - without file.")
 	public void testShareWithoutFile() {
 		Long fileId = 33L,
 				userId = 44L;
@@ -84,7 +84,7 @@ public class UserServiceImplTests {
 	}
 
 	@Test
-	@DisplayName("Test deete share.")
+	@DisplayName("Test UserService.delete - success case.")
 	public void testDeleteShare() {
 		Long fileId = 33L,
 				userId = 44L;
@@ -95,7 +95,7 @@ public class UserServiceImplTests {
 	}
 	
 	@Test
-	@DisplayName("Test share.")
+	@DisplayName("Test UserService.share - success case.")
 	public void testShare() {
 		Long fileId = 33L,
 				userId = 44L;
@@ -111,7 +111,7 @@ public class UserServiceImplTests {
 	}
 	
 	@Test
-	@DisplayName("Test loadUserByUsername without user.")
+	@DisplayName("Test UserService.loadUserByUsername - without user.")
 	public void testLoadUserByUsernameWithoutUser() {
 		String userName = "tested user name";
 		when(userRepository.findByUsername(userName)).thenReturn(Optional.empty());
@@ -121,7 +121,7 @@ public class UserServiceImplTests {
 	}
 	
 	@Test
-	@DisplayName("Test loadUserByUsername - success case.")
+	@DisplayName("Test UserService.loadUserByUsername - success case.")
 	public void testLoadUserByUsername() {
 		String userName = "tested user name";
 		User testedUser = new User(1L, userName);
@@ -133,13 +133,13 @@ public class UserServiceImplTests {
 	}
 	
 	@Test
-	@DisplayName("Test createUser with null as a user.")
+	@DisplayName("Test UserService.createUser - null as a user.")
 	public void testCreateUserWithNullUser() {
 		assertThrows(IllegalArgumentException.class, () -> userService.createUser(null));
 	}
 	
 	@Test
-	@DisplayName("Test createUser - success case.")
+	@DisplayName("Test UserService.createUser - success case.")
 	public void testCreateUserWith() {
 		User user = new User();
 		userService.createUser(user);
@@ -148,7 +148,7 @@ public class UserServiceImplTests {
 	}
 	
 	@Test
-	@DisplayName("Test loadAlreadySharedList with wrong fileId.")
+	@DisplayName("Test UserService.loadAlreadySharedList - wrong fileId.")
 	public void testLoadAlreadySharedListWithWrongFileId() {
 		long fileId = 31l;
 
@@ -157,7 +157,7 @@ public class UserServiceImplTests {
 	}
 
 	@Test
-	@DisplayName("Test loadAlreadySharedList on the file, owned by not currently logged-in user.")
+	@DisplayName("Test UserService.loadAlreadySharedList - file, owned by not currently logged-in user.")
 	public void testLoadAlreadySharedListOnFileWithAnotherOwner() {
 		long fileId = 31l,
 				loggedUserId = 13l;
@@ -169,7 +169,7 @@ public class UserServiceImplTests {
 	}
 
 	@Test
-	@DisplayName("Test loadAlreadySharedList on the file with null owner.")
+	@DisplayName("Test UserService.loadAlreadySharedList - file with null owner.")
 	public void testLoadAlreadySharedListOnFileWithNullOwner() {
 		long fileId = 31l;
 		FileItem fileItem = new FileItem(fileId);
@@ -180,7 +180,7 @@ public class UserServiceImplTests {
 	}
 	
 	@Test
-	@DisplayName("Test loadAlreadySharedList - success case.")
+	@DisplayName("Test UserService.loadAlreadySharedList - success case.")
 	public void testLoadAlreadySharedList() {
 		long fileId = 31l,
 				loggedUserId = 13l;

@@ -76,13 +76,13 @@ public class StorageServiceImplTests {
 	}
 
 	@Test
-	@DisplayName("Test loadAll method with empty result.")
+	@DisplayName("Test StorageService.loadAll - empty result.")
 	public void testLoadAllWithEmptyResult() {
 		assertEquals(Collections.emptyList(), storageService.loadAll(USER_ID));
 	}
 
 	@Test
-	@DisplayName("Test loadAll method with data.")
+	@DisplayName("Test StorageService.loadAll - success case.")
 	public void testLoadAllWithData() {
 		int countOfItems = 10;
 		List<SharedFileItem> items = IntStream.range(0, countOfItems)
@@ -93,7 +93,7 @@ public class StorageServiceImplTests {
 	}
 
 	@Test
-	@DisplayName("Test load file without any data in DB.")
+	@DisplayName("Test StorageService.load file - without any data in DB.")
 	public void testLoadWithoutFile() {
 		Long fileId = 321L;
 		when(fileRepository.findByIdAndOwner(USER_ID, fileId)).thenReturn(Optional.empty());
@@ -101,7 +101,7 @@ public class StorageServiceImplTests {
 	}
 
 	@Test
-	@DisplayName("Test load file with ok file data.")
+	@DisplayName("Test StorageService.load - success case.")
 	public void testLoadWithOKFile() {
 		Long fileId = 321L;
 		FileItem fileItem = new FileItem(fileId);
@@ -119,14 +119,14 @@ public class StorageServiceImplTests {
 	}
 
 	@Test
-	@DisplayName("Test init service without provided path.")
+	@DisplayName("Test StorageService.init - without provided path.")
 	public void testInitWithoutPath() {
 		StorageServiceImpl realStorageService = new StorageServiceImpl();
 		assertThrows(IllegalArgumentException.class, () -> realStorageService.init());
 	}
 
 	@Test
-	@DisplayName("Test init service with wrong path.")
+	@DisplayName("Test StorageService.init - with wrong path.")
 	public void testInitWithWrongPath() {
 		StorageServiceImpl realStorageService = new StorageServiceImpl();
 		ReflectionTestUtils.setField(realStorageService, "storePath", "/" + UUID.randomUUID().toString());
@@ -134,7 +134,7 @@ public class StorageServiceImplTests {
 	}
 
 	@Test
-	@DisplayName("Test init service with path, pointed to a file.")
+	@DisplayName("Test StorageService.init - with path, pointed to a file.")
 	public void testInitWithPathPointedToFile() throws IOException {
 		File file = folder.newFile(UUID.randomUUID().toString());
 		StorageServiceImpl realStorageService = new StorageServiceImpl();
@@ -143,14 +143,14 @@ public class StorageServiceImplTests {
 	}
 
 	@Test
-	@DisplayName("Test init service with correct path.")
+	@DisplayName("Test StorageService.init success case.")
 	public void testInitWithCorrectPath() throws IOException {
 		StorageServiceImpl realStorageService = new StorageServiceImpl();
 		ReflectionTestUtils.setField(realStorageService, "storePath", folder.getRoot().getAbsolutePath());
 	}
 
 	@Test
-	@DisplayName("Test init service wit empty path.")
+	@DisplayName("Test StorageService.init - wit empty path.")
 	public void testInitWitEmptyPath() {
 		StorageServiceImpl realStorageService = new StorageServiceImpl();
 		ReflectionTestUtils.setField(realStorageService, "storePath", "");
@@ -158,7 +158,7 @@ public class StorageServiceImplTests {
 	}
 
 	@Test
-	@DisplayName("Test store file without existed user.")
+	@DisplayName("Test StorageService.store - file without existed user.")
 	public void testStoreWithoutUser() {
 		when(userRepository.findById(USER_ID)).thenReturn(Optional.empty());
 
@@ -166,7 +166,7 @@ public class StorageServiceImplTests {
 	}
 
 	@Test
-	@DisplayName("Test store file with some exception, occured at storing process.")
+	@DisplayName("Test StorageService.store-  file with some exception, occured at storing process.")
 	public void testStoreWithStoringException() {
 		when(userRepository.findById(USER_ID)).thenReturn(Optional.of(LOGGED_USER));
 		doThrow(IllegalStateException.class).when(fileRepository).save(any(FileItem.class));
@@ -175,7 +175,7 @@ public class StorageServiceImplTests {
 	}
 
 	@Test
-	@DisplayName("Test store file. Positive case.")
+	@DisplayName("Test StorageService.store file - success case.")
 	public void testStore() {
 		// return what was passed as an argument for checking some service method logic!
 		when(fileRepository.save(any(FileItem.class))).thenAnswer(answer -> answer.getArguments()[0]);

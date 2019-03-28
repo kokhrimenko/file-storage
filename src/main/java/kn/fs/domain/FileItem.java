@@ -11,18 +11,18 @@ import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table
+@Table(name = "FILE_ITEM")
 public class FileItem {
 
 	@Id
 	@GeneratedValue
 	private Long id;
 	
-	@Column
+	@Column(nullable = false)
 	@NotNull
 	private String name;
 	
-	@Column
+	@Column(name = "fs_path", nullable = false)
 	private String fsPath;
 	
 	@ManyToOne
